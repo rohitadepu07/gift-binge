@@ -5,6 +5,7 @@ import {
   ChevronLeft, ChevronRight, Search, Bell, Heart, Smile, Star,
   Cake, Gift, PartyPopper, Sparkles, Crown, Sun, LogOut, Loader2
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { toast } from "sonner";
 
 interface Profile {
@@ -35,7 +36,9 @@ const DEFAULT_PROFILES: Profile[] = [
   { id: "bestfriend", name: "Best Friend", iconName: "heart", colorClass: "bg-[#1F80E0]", colorHex: "#1F80E0" }
 ];
 
-const PROFILE_ICONS: Record<string, any> = {
+type ActiveTab = "home" | "shows" | "movies" | "new" | "story";
+
+const PROFILE_ICONS: Record<string, LucideIcon> = {
   smile: Smile,
   heart: Heart,
   star: Star,
@@ -273,7 +276,7 @@ export default function App() {
   const [activeProfile, setActiveProfile] = useState<Profile | null>(null);
 
   // Custom states
-  const [activeTab, setActiveTab] = useState<"home" | "shows" | "movies" | "new" | "story">("home");
+  const [activeTab, setActiveTab] = useState<ActiveTab>("home");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedItem, setSelectedItem] = useState<MemoryItem | null>(null);
   const [playingItem, setPlayingItem] = useState<MemoryItem | null>(null);
@@ -728,17 +731,17 @@ export default function App() {
 
               {/* Middle Navigation options — mixed case, perfectly aligned with the main logo */}
               <nav className="hidden md:flex items-center gap-5 ml-2">
-                {[
+                {([
                   { id: "home", label: "Home" },
                   { id: "shows", label: "Shows" },
                   { id: "movies", label: "Movies" },
                   { id: "new", label: "New & Popular" },
                   { id: "story", label: "Our Story" }
-                ].map((tab) => (
+                ] satisfies { id: ActiveTab; label: string }[]).map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => {
-                      setActiveTab(tab.id as any);
+                      setActiveTab(tab.id);
                       if (tab.id === "story") {
                         toast.info("Thank you for sharing your story! Hand-crafted with lots of love.");
                       }
