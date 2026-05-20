@@ -265,9 +265,6 @@ const FEATURED_HERO: MemoryItem = {
 
 
 export default function App() {
-  const onBack = () => {
-    toast.info("This is a standalone premium experience!");
-  };
   const [flowState, setFlowState] = useState<"landing" | "loading" | "profiles" | "dashboard">("landing");
   const [profiles, setProfiles] = useState<Profile[]>(() => {
     const saved = localStorage.getItem("gift_binge_profiles");
